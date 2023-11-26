@@ -1,0 +1,4 @@
+#connect to a server without typing a password.
+Host 100.25.2.209
+    IdentifyFile ~/.ssh/school
+    PasswordAuthentication no
