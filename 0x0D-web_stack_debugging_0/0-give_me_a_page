@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# Install Apache- debug a docker container
+
+apt install apache2
+service apache2 start
