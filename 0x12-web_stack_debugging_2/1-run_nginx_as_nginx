@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+# fixes a container so that Nginx is running as the nginx user
+
+# kill apache2 process
+pkill -u root -f '/usr/sbin/apache2 -k start$'
+
+# comment out any existing user
+sed -i 's/^user/#&/' /etc/nginx/nginx.conf
+
+# create nginx user
+sed -i '1i user nginx;\n' /etc/nginx/nginx.conf
+
+# change nginx to listen to port 8080 
+sed -i 's/listen 80/listen 8080/g' /etc/nginx/sites-available/default
+sed -i 's/listen \[::\]:80/listen \[::\]:8080/g' /etc/nginx/sites-available/default
+
+# make nginx the owner of config files
+chown -R nginx:nginx /etc/nginx/
+
+# update main config files permissions
+su nginx -s /bin/bash -c 'chmod 644 /etc/nginx/nginx.conf'
+
+# start service as nginx
+su nginx -s /bin/bash -c 'service nginx start'
