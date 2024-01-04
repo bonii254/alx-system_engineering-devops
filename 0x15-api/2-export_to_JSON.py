@@ -9,14 +9,13 @@ import sys
 if __name__ == "__main__":
     user_id = sys.argv[1]
     url = "https://jsonplaceholder.typicode.com/"
-    user = requests.get(url + "users/{}".format(sys.argv[1])).json()
-    todos = requests.get(url + "todos", params={"userId": sys.argv[1]}).json()
-    completed = [t.get("title") for t in todos if t.get("completed") is True]
-    username = user.get("name")
+    user = requests.get(url + "users/{}".format(user_id)).json()
+    username = user.get("username")
+    todos = requests.get(url + "todos", params={"userId": user_id}).json()
 
     with open("{}.json".format(user_id), "w") as jsonfile:
         json.dump({user_id: [{
-            "task": t.get("title"),
-            "completed": t.get("completed"),
-            "username": username,
+                "task": t.get("title"),
+                "completed": t.get("completed"),
+                "username": username
             } for t in todos]}, jsonfile)
